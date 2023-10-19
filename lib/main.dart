@@ -27,7 +27,8 @@ class WelcomeScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,  // Centra gli elementi verticalmente nella colonna
+          mainAxisAlignment: MainAxisAlignment
+              .center, // Centra gli elementi verticalmente nella colonna
           children: <Widget>[
             // Scritta centrata
             Text(
@@ -36,10 +37,10 @@ class WelcomeScreen extends StatelessWidget {
             ),
 
             // Spaziatura tra la scritta e l'immagine
-            SizedBox(height: 20),  // Puoi regolare l'altezza come preferisci
+            SizedBox(height: 20), // Puoi regolare l'altezza come preferisci
 
             // Immagine centrata
-            Image.asset('assets/logo-trasp.png'),
+            Image.asset('images/logo-trasp.png'),
           ],
         ),
       ),
@@ -78,8 +79,7 @@ class NightLifeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text('Night Life\n\nqui metteremo la lista delle serate')
-    );
+        child: Text('Night Life\n\nqui metteremo la lista delle serate'));
   }
 }
 
@@ -104,9 +104,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_titles[_currentIndex],
+        title: Text(
+          _titles[_currentIndex],
           style: TextStyle(
-          color: Colors.white, //colore del titolo in alto
+            color: Colors.white, //colore del titolo in alto
           ),
         ),
       ),
@@ -114,10 +115,12 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.access_time), label: 'Orari'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.access_time), label: 'Orari'),
           BottomNavigationBarItem(icon: Icon(Icons.air), label: 'Vento'),
           BottomNavigationBarItem(icon: Icon(Icons.event), label: 'Eventi'),
-          BottomNavigationBarItem(icon: Icon(Icons.nightlife), label: 'Night Life'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.nightlife), label: 'Night Life'),
         ],
         currentIndex: _currentIndex,
         selectedItemColor: Colors.black,
@@ -131,9 +134,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-
-
-
-
-
