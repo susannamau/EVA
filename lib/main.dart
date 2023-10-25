@@ -4,9 +4,19 @@ import 'package:app/OrariNavi.dart';
 import 'Vento.dart';
 import 'EventiPage.dart';
 import 'NightLifePage.dart';
+import 'GuardiaMedica.dart';
 import 'DevelopmentInfoPage.dart';
 
-void main() => runApp(ElbaVivaApp());
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
+
+
+void main() async => runApp(ElbaVivaApp());
+
+await Firebase.initializeApp(
+options: DefaultFirebaseOptions.currentPlatform,
+);
 
 class ElbaVivaApp extends StatelessWidget {
   @override
@@ -70,22 +80,34 @@ class _StructureState extends State<Structure> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
-              child: Text('Menu Header'),
+              child: Center(
+                child: Text('ElbaViva❤️‍🔥',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 30,
+                ),
+                ),
+              ),
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
             ),
             ListTile(
-              title: Text('Item 1'),
+              leading: Icon(Icons.local_hospital),
+              title: Text('Guardia medica'),
               onTap: () {
-                // Aggiorna il contenuto dell'app quando viene selezionato l'elemento
-                //Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => GuardiaMedica()),
+                );
               },
             ),
             ListTile(
-              title: Text('Dev'),
+              leading: Icon(Icons.info),
+              title: Text('Informazioni sullo sviluppo dell\'app'),
               onTap: () {
-                // Aggiorna il contenuto dell'app quando viene selezionato l'elemento
                 Navigator.pop(context);
                 Navigator.push(
                   context,
@@ -99,38 +121,38 @@ class _StructureState extends State<Structure> {
         ),
       ),
       body: _children[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
+      bottomNavigationBar: NavigationBar(
+        destinations: <Widget>[
+          NavigationDestination(
+              selectedIcon: Icon(Icons.home),
+              icon: Icon(Icons.home_outlined),
               label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.access_time),
+          NavigationDestination(
+              selectedIcon: Icon(Icons.directions_boat),
+              icon: Icon(Icons.directions_boat_outlined),
               label: 'Orari'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.air),
+          NavigationDestination(
+              selectedIcon: Icon(Icons.air),
+              icon: Icon(Icons.air_outlined),
               label: 'Vento'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.event),
+          NavigationDestination(
+              selectedIcon: Icon(Icons.event),
+              icon: Icon(Icons.event_outlined),
               label: 'Eventi'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.nightlife),
-              label: 'Night Life'),
+          NavigationDestination(
+              selectedIcon: Icon(Icons.nightlife),
+              icon: Icon(Icons.nightlife_outlined),
+              label: 'Locali'),
         ],
-        currentIndex: _currentIndex,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.black,
-        //showUnselectedLabels: true,
-        unselectedLabelStyle: TextStyle(
-          color: Colors.white,
-        ),
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
+        selectedIndex: _currentIndex,
+        //indicatorColor: Colors.blue,
+        indicatorShape: CircleBorder(),
+        onDestinationSelected: (int index) {
+        setState(() {
+        _currentIndex = index;
+        });
         },
       ),
     );
   }
 }
-// QUI INIZIA CODICE PER MENU LATERALE

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "106006254364",
+    "project_id": "elbaviva-7feb6",
+    "storage_bucket": "elbaviva-7feb6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:106006254364:android:0a7a00a4099096a9b9a0d9",
+        "android_client_info": {
+          "package_name": "com.example.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB10HgZmUB1LR075fNC8OEdkd7Yz7KwP0Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
