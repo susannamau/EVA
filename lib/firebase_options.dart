@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
-///w
+///
 /// Example:
 /// ```dart
 /// import 'firebase_options.dart';
@@ -49,6 +49,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '106006254364',
     projectId: 'elbaviva-7feb6',
     authDomain: 'elbaviva-7feb6.firebaseapp.com',
+    databaseURL: 'https://elbaviva-7feb6-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'elbaviva-7feb6.appspot.com',
     measurementId: 'G-BF2291CT90',
   );
@@ -58,6 +59,7 @@ class DefaultFirebaseOptions {
     appId: '1:106006254364:android:0a7a00a4099096a9b9a0d9',
     messagingSenderId: '106006254364',
     projectId: 'elbaviva-7feb6',
+    databaseURL: 'https://elbaviva-7feb6-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'elbaviva-7feb6.appspot.com',
   );
 
@@ -66,6 +68,7 @@ class DefaultFirebaseOptions {
     appId: '1:106006254364:ios:66ae8262ea9f7f71b9a0d9',
     messagingSenderId: '106006254364',
     projectId: 'elbaviva-7feb6',
+    databaseURL: 'https://elbaviva-7feb6-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'elbaviva-7feb6.appspot.com',
     iosBundleId: 'com.example.app',
   );
@@ -75,6 +78,7 @@ class DefaultFirebaseOptions {
     appId: '1:106006254364:ios:3f32827baf98efe7b9a0d9',
     messagingSenderId: '106006254364',
     projectId: 'elbaviva-7feb6',
+    databaseURL: 'https://elbaviva-7feb6-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'elbaviva-7feb6.appspot.com',
     iosBundleId: 'com.example.app.RunnerTests',
   );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Home.dart';
 import 'package:app/OrariNavi.dart';
-import 'Vento.dart';
+import 'Vento_DB.dart';
 import 'EventiPage.dart';
 import 'NightLifePage.dart';
 import 'GuardiaMedica.dart';
@@ -9,14 +9,15 @@ import 'DevelopmentInfoPage.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:firebase_database/firebase_database.dart';
 
-
-
-void main() async => runApp(ElbaVivaApp());
-
-await Firebase.initializeApp(
-options: DefaultFirebaseOptions.currentPlatform,
-);
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(ElbaVivaApp());
+}
 
 class ElbaVivaApp extends StatelessWidget {
   @override
@@ -81,11 +82,12 @@ class _StructureState extends State<Structure> {
           children: <Widget>[
             DrawerHeader(
               child: Center(
-                child: Text('ElbaViva❤️‍🔥',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 30,
-                ),
+                child: Text(
+                  'ElbaViva❤️‍🔥',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 30,
+                  ),
                 ),
               ),
               decoration: BoxDecoration(
@@ -99,8 +101,7 @@ class _StructureState extends State<Structure> {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => GuardiaMedica()),
+                  MaterialPageRoute(builder: (context) => GuardiaMedica()),
                 );
               },
             ),
@@ -148,9 +149,9 @@ class _StructureState extends State<Structure> {
         //indicatorColor: Colors.blue,
         indicatorShape: CircleBorder(),
         onDestinationSelected: (int index) {
-        setState(() {
-        _currentIndex = index;
-        });
+          setState(() {
+            _currentIndex = index;
+          });
         },
       ),
     );
