@@ -20,7 +20,7 @@ class _NightLifeState extends State<NightLife> {
 
   fetchData() async {
     try {
-      DatabaseEvent event = await database.child('serata').once(); //in caso si può rimuovere il child
+      DatabaseEvent event = await database.child('serate').once(); //in caso si può rimuovere il child
       setState(() {
         data = event.snapshot.value;
       });
