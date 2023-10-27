@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'dart:convert';
 
 class NightLife extends StatefulWidget {
   const NightLife({super.key});
@@ -11,6 +12,7 @@ class NightLife extends StatefulWidget {
 class _NightLifeState extends State<NightLife> {
   DatabaseReference database = FirebaseDatabase.instance.ref();
   var data;
+  var eventi;
 
   @override
   void initState() {
@@ -23,6 +25,7 @@ class _NightLifeState extends State<NightLife> {
       DatabaseEvent event = await database.child('serate').once(); //in caso si può rimuovere il child
       setState(() {
         data = event.snapshot.value;
+        eventi = json.decode(data);
       });
     } catch (e) {
       print("Errore durante il fetch dei dati: $e");
@@ -54,8 +57,13 @@ class _NightLifeState extends State<NightLife> {
             Center(
               child: Text("It's cloudy here"),
             ),
-            Center(
-              child: data == null ? Text('Non carica') : Text('Dati: $data'),
+            ListView.builder(
+              itemCount: eventi.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(eventi[index]),
+                );
+              },
             ),
           ],
         ),
