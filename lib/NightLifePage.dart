@@ -1,4 +1,4 @@
-import 'dart:ffi';
+//import 'dart:ffi';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -51,10 +51,7 @@ class NightLife extends StatefulWidget {
 
 class _NightLifeState extends State<NightLife> {
   DatabaseReference database =
-      FirebaseDatabase.instance
-          .ref('serate')
-          .orderByKey()
-          .ref;
+      FirebaseDatabase.instance.ref('serate').orderByKey().ref;
   var eventi;
   var data;
   List<EventList> calendar = [];
@@ -107,6 +104,11 @@ class _NightLifeState extends State<NightLife> {
       child: Scaffold(
         appBar: AppBar(
           title: const TabBar(
+            unselectedLabelColor: Colors.white54,
+            indicator: UnderlineTabIndicator(
+              //borderSide: BorderSide(color: Color(0xDD613896), width: 8.0),
+              insets: EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 10.0),
+            ),
             tabs: <Widget>[
               Tab(
                 text: 'Ristoranti',
@@ -128,47 +130,67 @@ class _NightLifeState extends State<NightLife> {
               child: data == null
                   ? CircularProgressIndicator()
                   : CustomScrollView(
-                slivers: calendar.map((eventList) {
-                  return SliverStickyHeader(
-                    header: Container(
-                      height: 50.0,
-                      color: Colors.grey[200],
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      alignment: Alignment.centerLeft,
-                      child: Center (
-                        child: Text(
-                          '${printableDay(eventList.date)} '
-                            '${eventList.date.day.toString().padLeft(2, '0')}-'
+                      slivers: calendar.map((eventList) {
+                        return SliverStickyHeader(
+                          header: Container(
+                            height: 50.0,
+                            color: Colors.grey[200],
+                            padding: EdgeInsets.symmetric(horizontal: 16.0),
+                            alignment: Alignment.centerLeft,
+                            child: Center(
+                              child: Text(
+                                '${printableDay(eventList.date)} '
+                                '${eventList.date.day.toString().padLeft(2, '0')}-'
                                 '${eventList.date.month.toString().padLeft(2, '0')}-'
                                 '${eventList.date.year}',
-                            style: const TextStyle(color: Colors.black,
-                            fontWeight: FontWeight.bold),
-                          ),
-                      ),
-                    ),
-                    sliver: SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                            (context, i) =>
-                            ListTile(
-                              leading: Icon(Icons.music_note),
-                              title: Text(
-                                  eventList.eventiDelGiorno[i]
-                                      .locale,
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
                               ),
-                              subtitle: Text(
-                                  eventList.eventiDelGiorno[i]
-                                      .genere),
                             ),
-                        childCount: eventList.eventiDelGiorno.length,
-                      ),
+                          ),
+                          sliver: SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (context, i) => ListTile(
+                                leading: Icon(Icons.music_note),
+                                title: Text(
+                                  eventList.eventiDelGiorno[i].locale,
+                                ),
+                                subtitle:
+                                    Text(eventList.eventiDelGiorno[i].genere),
+                                onTap: () {
+                                  _showLocaleInfo(context, 'Informazioni specifiche del locale qui');
+                                },
+                              ),
+                              childCount: eventList.eventiDelGiorno.length,
+                            ),
+                          ),
+                        );
+                      }).toList(),
                     ),
-                  );
-                }).toList(),
-              ),
             )
           ],
         ),
       ),
     );
   }
+}
+void _showLocaleInfo(BuildContext context, String locale) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Informazioni sul locale'),
+        content: Text(locale),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Chiudi'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
