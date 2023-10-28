@@ -126,7 +126,7 @@ class _NightLifeState extends State<NightLife> {
             ),
             Center(
               child: data == null
-                  ? Text('Non carica')
+                  ? CircularProgressIndicator()
                   : CustomScrollView(
                 slivers: calendar.map((eventList) {
                   return SliverStickyHeader(
@@ -137,11 +137,12 @@ class _NightLifeState extends State<NightLife> {
                       alignment: Alignment.centerLeft,
                       child: Center (
                         child: Text(
-                          '${printableDay(eventList.date)} - '
+                          '${printableDay(eventList.date)} '
                             '${eventList.date.day.toString().padLeft(2, '0')}-'
                                 '${eventList.date.month.toString().padLeft(2, '0')}-'
                                 '${eventList.date.year}',
-                            style: const TextStyle(color: Colors.black),
+                            style: const TextStyle(color: Colors.black,
+                            fontWeight: FontWeight.bold),
                           ),
                       ),
                     ),
