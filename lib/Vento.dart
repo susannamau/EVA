@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'dart:math';
 
+final GlobalKey imageKey = GlobalKey();
+
 String direzioneVento(int gradi) {
   if (gradi >= 337.5 || gradi < 22.5) return 'Tramontana';
   if (gradi >= 22.5 && gradi < 67.5) return 'Grecale';
@@ -124,6 +126,9 @@ class _WindMapState extends State<WindMap> with SingleTickerProviderStateMixin {
   AnimationController? _controller;
   late Animation<double> _translationAnimation;
 
+  double? _imageWidth;
+  double? _imageHeight;
+
   @override
   void initState() {
     super.initState();
@@ -133,20 +138,25 @@ class _WindMapState extends State<WindMap> with SingleTickerProviderStateMixin {
     )..repeat(reverse: true);
 
     _translationAnimation = Tween<double>(begin: 0, end: 50).animate(_controller!);
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      _getRenderedSize();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    // Assuming a 4x4 grid of arrows
+
     int rows = 4;
-    int columns = 4;
+    int columns = 6;
+    double desiredCellWidth = 100.0;  // Example width of a cell.
+    double desiredCellHeight = 100.0;  // Example height of a cell.
 
-    // Assuming the image dimensions are 400x400 for spacing purposes
-    double imageWidth = 400.0;  // Replace with actual width
-    double imageHeight = 400.0; // Replace with actual height
+    columns = ( _imageWidth / desiredCellWidth ).ceil();
+    rows = ( _imageHeight! / desiredCellHeight ).ceil();
 
-    double horizontalSpacing = imageWidth / (columns + 1);
-    double verticalSpacing = imageHeight / (rows + 1);
+    double horizontalSpacing = (_imageWidth ?? 400.0) / (columns + 1);
+    double verticalSpacing = (_imageHeight ?? 400.0) / (rows + 1);
+    print('W:${_imageWidth}, H:${_imageHeight}');
 
     List<Widget> arrows = [];
 
@@ -154,8 +164,8 @@ class _WindMapState extends State<WindMap> with SingleTickerProviderStateMixin {
       for (int j = 0; j < columns; j++) {
         arrows.add(
           Positioned(
-            left: (j + 1) * horizontalSpacing,
-            top: (i + 1) * verticalSpacing,
+            left: (j+0.5) * horizontalSpacing,
+            top: (i+1) * verticalSpacing,
             child: AnimatedBuilder(
               animation: _controller!,
               builder: (_, child) {
@@ -177,12 +187,25 @@ class _WindMapState extends State<WindMap> with SingleTickerProviderStateMixin {
 
     return Stack(
       children: [
-        Image.asset('images/cartina-elba.jpg', fit: BoxFit.cover),
+        Image.asset('images/cartina-elba.jpg',
+            fit: BoxFit.cover,
+            key: imageKey,
+        ),
         ...arrows,
       ],
     );
   }
 
+  void _getRenderedSize() {
+    final RenderBox? box = imageKey.currentContext?.findRenderObject() as RenderBox?;
+    if (box != null && box.hasSize) {
+      final size = box.size;
+      setState(() {
+        _imageWidth = size.width;
+        _imageHeight = size.height;
+      });
+    }
+  }
 
 
 
@@ -192,3 +215,4 @@ class _WindMapState extends State<WindMap> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 }
+
