@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'dart:math';
 
 String direzioneVento(int gradi) {
   if (gradi >= 337.5 || gradi < 22.5) return 'Tramontana';
@@ -14,10 +15,6 @@ String direzioneVento(int gradi) {
   return 'Direzione non valida'; // per gradi non compresi tra 0 e 360
 }
 
-void main() {
-  int gradi = 45; // Esempio di valore di input
-  print(direzioneVento(gradi));
-}
 
 class Weather {
   final int windDirection;
@@ -97,14 +94,101 @@ class _VentoState extends State<Vento> {
         appBar: AppBar(
           title: Text("Firebase Realtime Database"),
         ),
-        body: Center(
-          child: listaMeteo.length==0 ?
-          CircularProgressIndicator(
-          ) :
-          Text(
-            listaMeteo[0].toString(),
-            textAlign: TextAlign.justify,
-          ),
+        body: Column(
+          children: [
+            WindMap(windDirection: 45),
+            Center(
+              child: listaMeteo.length==0 ?
+              CircularProgressIndicator(
+              ) :
+              Text(
+                listaMeteo[0].toString(),
+                textAlign: TextAlign.justify,
+              ),
+            ),
+          ],
         ));
+  }
+}
+
+class WindMap extends StatefulWidget {
+  final int windDirection;
+
+  WindMap({required this.windDirection});
+
+  @override
+  _WindMapState createState() => _WindMapState();
+}
+
+class _WindMapState extends State<WindMap> with SingleTickerProviderStateMixin {
+  AnimationController? _controller;
+  late Animation<double> _translationAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 3),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _translationAnimation = Tween<double>(begin: 0, end: 50).animate(_controller!);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Assuming a 4x4 grid of arrows
+    int rows = 4;
+    int columns = 4;
+
+    // Assuming the image dimensions are 400x400 for spacing purposes
+    double imageWidth = 400.0;  // Replace with actual width
+    double imageHeight = 400.0; // Replace with actual height
+
+    double horizontalSpacing = imageWidth / (columns + 1);
+    double verticalSpacing = imageHeight / (rows + 1);
+
+    List<Widget> arrows = [];
+
+    for (int i = 0; i < rows; i++) {
+      for (int j = 0; j < columns; j++) {
+        arrows.add(
+          Positioned(
+            left: (j + 1) * horizontalSpacing,
+            top: (i + 1) * verticalSpacing,
+            child: AnimatedBuilder(
+              animation: _controller!,
+              builder: (_, child) {
+                double dx = _translationAnimation.value * cos(widget.windDirection.toDouble() * pi / 180);
+                double dy = - _translationAnimation.value * sin(widget.windDirection.toDouble() * pi / 180);
+                return Transform.translate(
+                  offset: Offset(dx, dy),
+                  child: Transform.rotate(
+                    angle: (widget.windDirection.toDouble() * pi / 180),
+                    child: Icon(Icons.arrow_upward, color: Colors.blue, size: 50.0),
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+      }
+    }
+
+    return Stack(
+      children: [
+        Image.asset('images/cartina-elba.jpg', fit: BoxFit.cover),
+        ...arrows,
+      ],
+    );
+  }
+
+
+
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
   }
 }
