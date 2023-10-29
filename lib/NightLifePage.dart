@@ -44,7 +44,6 @@ class Event {
 
 class NightLife extends StatefulWidget {
   const NightLife({super.key});
-
   @override
   State<NightLife> createState() => _NightLifeState();
 }
