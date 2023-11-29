@@ -187,7 +187,7 @@ class _WindMapState extends State<WindMap> with SingleTickerProviderStateMixin {
 
     return Stack(
       children: [
-        Image.asset('images/cartina-elba.jpg',
+        Image.asset('images/maps/contorno-nero.png',
             fit: BoxFit.cover,
             key: imageKey,
         ),

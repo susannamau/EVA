@@ -19,7 +19,7 @@ class Home extends StatelessWidget {
             SizedBox(height: 20), // Puoi regolare l'altezza come preferisci
 
             // Immagine centrata
-            Image.asset('images/logo-trasp.png'),
+            Image.asset('images/Logo/polpo2.png'),
           ],
         ),
       ),
