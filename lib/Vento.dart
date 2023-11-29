@@ -151,8 +151,8 @@ class _WindMapState extends State<WindMap> with SingleTickerProviderStateMixin {
     double desiredCellWidth = 100.0;  // Example width of a cell.
     double desiredCellHeight = 100.0;  // Example height of a cell.
 
-    columns = ( _imageWidth / desiredCellWidth ).ceil();
-    rows = ( _imageHeight! / desiredCellHeight ).ceil();
+    //columns = ( _imageWidth / desiredCellWidth ).ceil();
+    //rows = ( _imageHeight! / desiredCellHeight ).ceil();
 
     double horizontalSpacing = (_imageWidth ?? 400.0) / (columns + 1);
     double verticalSpacing = (_imageHeight ?? 400.0) / (rows + 1);
