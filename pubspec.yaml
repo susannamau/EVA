@@ -41,3 +41,8 @@ flutter:
     - images/
     - images/Logo/
     - images/maps/
+  fonts:
+    - family: Pacifico
+      fonts:
+        - asset: fonts/Pacifico-Regular.ttf
+
