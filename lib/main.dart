@@ -82,7 +82,7 @@ class _StructureState extends State<Structure> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             SizedBox(
-              height: 300.0,
+              height: 310.0,
               child: DrawerHeader(
                 child: Center(
                   child: Column(
