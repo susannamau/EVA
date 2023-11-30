@@ -75,7 +75,7 @@ class _VentoState extends State<Vento>
   )..repeat(reverse: false);
 
   late final Animation<Offset> _offsetanimation = Tween<Offset>(
-    begin: -(offsetDaDirection(listaMeteo[0].windDirection)),
+    begin: (offsetDaDirection(listaMeteo[0].windDirection)),
     end: (offsetDaDirection(listaMeteo[0].windDirection)),
   ).animate(
     CurvedAnimation(
@@ -124,7 +124,8 @@ class _VentoState extends State<Vento>
         appBar: AppBar(
           title: Text("Firebase Realtime Database"),
         ),
-        body: Column(
+        //body : listaMeteo.isEmpty ? Center(child: CircularProgressIndicator()) :
+        body :  Column(
           children: [
             Stack(
               children: [
@@ -143,6 +144,10 @@ class _VentoState extends State<Vento>
                     ),
                   )
                 ),
+                // TODO Conditional part its bugged
+                listaMeteo.isEmpty
+                    ? Center(child: CircularProgressIndicator())
+                    : Container(), // Replace with actual widget for non-empty case
               ],
             ),
           Center(
