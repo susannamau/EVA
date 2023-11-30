@@ -5,6 +5,7 @@ import 'Vento.dart';
 import 'EventiPage.dart';
 import 'NightLifePage.dart';
 import 'GuardiaMedica.dart';
+import 'Supermercati.dart';
 import 'DevelopmentInfoPage.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -25,7 +26,7 @@ class ElbaVivaApp extends StatelessWidget {
     return MaterialApp(
       title: 'ELBAVIVA',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.cyan,
       ),
       home: Structure(),
     );
@@ -80,18 +81,29 @@ class _StructureState extends State<Structure> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
-              child: Center(
-                child: Text(
-                  'ElbaViva❤️‍🔥',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 30,
+            SizedBox(
+              height: 300.0,
+              child: DrawerHeader(
+                child: Center(
+                  child: Column(
+                    children: [
+                      Image.asset('images/Logo/polpo2.png',
+                      width: 150,
+                      ),
+                      Text(
+                        'ElbaViva',
+                        style: TextStyle(
+                          fontFamily: 'Pacifico',
+                          color: Colors.black,
+                          fontSize: 35,
+                        ),
+                      )
+                    ],
                   ),
                 ),
-              ),
-              decoration: BoxDecoration(
-                color: Colors.blue,
+                decoration: BoxDecoration(
+                  color: Colors.cyan.shade300,
+                ),
               ),
             ),
             ListTile(
@@ -106,7 +118,18 @@ class _StructureState extends State<Structure> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.info),
+              leading: Icon(Icons.shopping_cart),
+              title: Text('Supermercati'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Supermercati()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.developer_mode),
               title: Text('Informazioni sullo sviluppo dell\'app'),
               onTap: () {
                 Navigator.pop(context);
