@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'dart:convert';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
+import 'package:intl/intl.dart';
 
 String printableDay(DateTime d) {
   switch (d.weekday) {
@@ -44,6 +45,11 @@ class Ferry {
   }
 }
 
+DateTime importaDaFormatoSusanna(String s){
+  DateFormat format = DateFormat("HH.mm");
+  return format.parse(s);
+}
+
 class OrariNavi extends StatefulWidget {
   const OrariNavi({super.key});
   @override
@@ -83,9 +89,16 @@ class _OrariNaviState extends State<OrariNavi> {
           DateTime datekey = DateTime.parse(key);
           navi_all.add(FerryList(date: datekey, naviDelGiorno: []));
           for (var v in value) {
+            print("printingV");
+            print(v);
             navi_all[index]
                 .naviDelGiorno
-                .add(Ferry(date: v['data'], time_partenza: v['time_partenza'], time_arrivo: v['time_arrivo'], luogo_partenza: v['luogo_partenza'], luogo_arrivo: v['luogo_arrivo'], company: v['company']));
+                .add(Ferry(date: datekey,
+                time_partenza: importaDaFormatoSusanna(v['time_partenza']),
+                time_arrivo: importaDaFormatoSusanna(v['time_arrivo']),
+                luogo_partenza:v['luogo_partenza'],
+                luogo_arrivo: v['luogo_arrivo'],
+                company: v['company']));
           }
           index++;
         });

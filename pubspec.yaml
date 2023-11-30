@@ -29,6 +29,7 @@ dependencies:
   firebase_database: ^10.3.2
   http: ^0.13.3
   flutter_sticky_header: ^0.6.5
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:
