@@ -47,7 +47,8 @@ class Vento extends StatefulWidget {
   State<Vento> createState() => _VentoState();
 }
 
-class _VentoState extends State<Vento> {
+class _VentoState extends State<Vento>
+  with SingleTickerProviderStateMixin {
   DatabaseReference database = FirebaseDatabase.instance.ref('weather');
   var data;
   List<Weather> listaMeteo = [];
@@ -56,6 +57,26 @@ class _VentoState extends State<Vento> {
   void initState() {
     super.initState();
     fetchData();
+  }
+
+  late final AnimationController _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds:2)
+  )..repeat(reverse: false);
+
+  late final Animation<Offset> _offsetanimation = Tween<Offset>(
+    begin: Offset.zero,
+    end: Offset(1.5,0),
+  ).animate(
+    CurvedAnimation(
+        parent: _controller,
+        curve: Curves.linear,)
+  );
+  // dispose controller it's mandatory
+  @override
+  void dispose(){
+    _controller.dispose();
+    super.dispose();
   }
 
   fetchData() async {
@@ -108,7 +129,20 @@ class _VentoState extends State<Vento> {
                 textAlign: TextAlign.justify,
               ),
             ),
+            Center(
+              child: SlideTransition(
+                position: _offsetanimation,
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Icon(
+                      Icons.arrow_right,
+                      color: Colors.blue,
+                      size: 150.0),
+                ),
+              )
+            )
           ],
+
         ));
   }
 }
@@ -159,6 +193,8 @@ class _WindMapState extends State<WindMap> with SingleTickerProviderStateMixin {
     print('W:${_imageWidth}, H:${_imageHeight}');
 
     List<Widget> arrows = [];
+
+
 
     for (int i = 0; i < rows; i++) {
       for (int j = 0; j < columns; j++) {
