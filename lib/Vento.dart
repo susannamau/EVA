@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'dart:math';
 
-final GlobalKey imageKey = GlobalKey();
-
 String direzioneVento(int gradi) {
   if (gradi >= 337.5 || gradi < 22.5) return 'Tramontana';
   if (gradi >= 22.5 && gradi < 67.5) return 'Grecale';
@@ -15,6 +13,18 @@ String direzioneVento(int gradi) {
   if (gradi >= 292.5 && gradi < 337.5) return 'Maestrale';
 
   return 'Direzione non valida'; // per gradi non compresi tra 0 e 360
+}
+
+Offset offsetDaDirection(int gradi) {
+    if (gradi >= 337.5 || gradi < 22.5) return Offset(0.0, 1.0); // Down (Opposite of Up)
+    if (gradi >= 22.5 && gradi < 67.5) return Offset(-1.0, 1.0); // Down-Left (Opposite of Up-Right)
+    if (gradi >= 67.5 && gradi < 112.5) return Offset(-1.0, 0.0); // Left (Opposite of Right)
+    if (gradi >= 112.5 && gradi < 157.5) return Offset(-1.0, -1.0); // Up-Left (Opposite of Down-Right)
+    if (gradi >= 157.5 && gradi < 202.5) return Offset(0.0, -1.0); // Up (Opposite of Down)
+    if (gradi >= 202.5 && gradi < 247.5) return Offset(1.0, -1.0); // Up-Right (Opposite of Down-Left)
+    if (gradi >= 247.5 && gradi < 292.5) return Offset(1.0, 0.0); // Right (Opposite of Left)
+    if (gradi >= 292.5 && gradi < 337.5) return Offset(1.0, 1.0); // Down-Right (Opposite of Up-Left)
+    return Offset(0, 0); // per gradi non compresi tra 0 e 360
 }
 
 
@@ -65,8 +75,8 @@ class _VentoState extends State<Vento>
   )..repeat(reverse: false);
 
   late final Animation<Offset> _offsetanimation = Tween<Offset>(
-    begin: Offset.zero,
-    end: Offset(1.5,0),
+    begin: -(offsetDaDirection(listaMeteo[0].windDirection)),
+    end: (offsetDaDirection(listaMeteo[0].windDirection)),
   ).animate(
     CurvedAnimation(
         parent: _controller,
@@ -109,146 +119,38 @@ class _VentoState extends State<Vento>
 
   @override
   Widget build(BuildContext context) {
-    print('lista meteo length: ${listaMeteo.length}');
-    listaMeteo.forEach((element) {
-      print(element);
-    });
+
     return Scaffold(
         appBar: AppBar(
           title: Text("Firebase Realtime Database"),
         ),
         body: Column(
           children: [
-            WindMap(windDirection: 45),
-            Center(
-              child: listaMeteo.length==0 ?
-              CircularProgressIndicator(
-              ) :
-              Text(
-                listaMeteo[0].toString(),
-                textAlign: TextAlign.justify,
-              ),
-            ),
-            Center(
-              child: SlideTransition(
-                position: _offsetanimation,
-                child: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Icon(
-                      Icons.arrow_right,
-                      color: Colors.blue,
-                      size: 150.0),
+            Stack(
+              children: [
+                Center(
+                    child: Image.asset("images/maps/contorno-nero.png"),
                 ),
-              )
-            )
+                Center(
+                  child: SlideTransition(
+                    position: _offsetanimation,
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Icon(
+                          Icons.arrow_right,
+                          color: Colors.blue,
+                          size: 150.0),
+                    ),
+                  )
+                ),
+              ],
+            ),
+          Center(
+            child: Text(
+              listaMeteo[0].toString())
+            ),
           ],
 
         ));
   }
 }
-
-class WindMap extends StatefulWidget {
-  final int windDirection;
-
-  WindMap({required this.windDirection});
-
-  @override
-  _WindMapState createState() => _WindMapState();
-}
-
-class _WindMapState extends State<WindMap> with SingleTickerProviderStateMixin {
-  AnimationController? _controller;
-  late Animation<double> _translationAnimation;
-
-  double? _imageWidth;
-  double? _imageHeight;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: const Duration(seconds: 3),
-      vsync: this,
-    )..repeat(reverse: true);
-
-    _translationAnimation = Tween<double>(begin: 0, end: 50).animate(_controller!);
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      _getRenderedSize();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    int rows = 4;
-    int columns = 6;
-    double desiredCellWidth = 100.0;  // Example width of a cell.
-    double desiredCellHeight = 100.0;  // Example height of a cell.
-
-    //columns = ( _imageWidth / desiredCellWidth ).ceil();
-    //rows = ( _imageHeight! / desiredCellHeight ).ceil();
-
-    double horizontalSpacing = (_imageWidth ?? 400.0) / (columns + 1);
-    double verticalSpacing = (_imageHeight ?? 400.0) / (rows + 1);
-    print('W:${_imageWidth}, H:${_imageHeight}');
-
-    List<Widget> arrows = [];
-
-
-
-    for (int i = 0; i < rows; i++) {
-      for (int j = 0; j < columns; j++) {
-        arrows.add(
-          Positioned(
-            left: (j+0.5) * horizontalSpacing,
-            top: (i+1) * verticalSpacing,
-            child: AnimatedBuilder(
-              animation: _controller!,
-              builder: (_, child) {
-                double dx = _translationAnimation.value * cos(widget.windDirection.toDouble() * pi / 180);
-                double dy = - _translationAnimation.value * sin(widget.windDirection.toDouble() * pi / 180);
-                return Transform.translate(
-                  offset: Offset(dx, dy),
-                  child: Transform.rotate(
-                    angle: (widget.windDirection.toDouble() * pi / 180),
-                    child: Icon(Icons.arrow_upward, color: Colors.blue, size: 50.0),
-                  ),
-                );
-              },
-            ),
-          ),
-        );
-      }
-    }
-
-    return Stack(
-      children: [
-        Image.asset('images/maps/contorno-nero.png',
-            fit: BoxFit.cover,
-            key: imageKey,
-        ),
-        ...arrows,
-      ],
-    );
-  }
-
-  void _getRenderedSize() {
-    final RenderBox? box = imageKey.currentContext?.findRenderObject() as RenderBox?;
-    if (box != null && box.hasSize) {
-      final size = box.size;
-      setState(() {
-        _imageWidth = size.width;
-        _imageHeight = size.height;
-      });
-    }
-  }
-
-
-
-  @override
-  void dispose() {
-    _controller?.dispose();
-    super.dispose();
-  }
-}
-
