@@ -1,6 +1,4 @@
 # EVA
-
-## Description
 EVA is an innovative application designed to provide essential information to both tourists and locals. This app brings together various pieces of information that are otherwise scattered and hard to find, all in one place.
 
 ## Key Features
