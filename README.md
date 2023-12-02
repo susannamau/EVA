@@ -1,16 +1,27 @@
-# app
+# EVA
 
-A new Flutter project.
+## Description
+EVA is an innovative application designed to provide essential information to both tourists and locals. This app brings together various pieces of information that are otherwise scattered and hard to find, all in one place.
 
-## Getting Started
+## Key Features
+*Details on key features will be added later.*
 
-This project is a starting point for a Flutter application.
+## Technologies Used
+EVA is built using the Flutter environment and Firebase as a backend.
 
-A few resources to get you started if this is your first Flutter project:
+## Installation
+Upon launch, EVA will be available for download on the Google Play Store and Apple App Store. Stay tuned for further updates.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## How to Use the App
+*Details on how to use the app will be provided soon.*
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Contributing
+Interested in contributing to the ElbaViva project? Follow and reach out to us on our GitHub profiles:
+- [@susannamau](https://github.com/susannamau)
+- [@arcticronin](https://github.com/arcticronin)
+
+## Contact
+For questions, support, or feedback, feel free to contact us through our GitHub profiles.
+
+## License
+*License information will be added later.*
